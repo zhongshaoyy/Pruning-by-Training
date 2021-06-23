@@ -1,19 +1,23 @@
-# BNN.pytorch
-Binarized Neural Network (BNN) for pytorch
-This is the pytorch version for the BNN code, fro VGG and resnet models
-Link to the paper: https://papers.nips.cc/paper/6573-binarized-neural-networks
+# model compression
+Implementation with PyTorch. 
 
-The code is based on https://github.com/eladhoffer/convNet.pytorch
-Please install torch and torchvision by following the instructions at: http://pytorch.org/
-To run resnet18 for cifar10 dataset use: python main_binary.py --model resnet_binary --save resnet18_binary --dataset cifar10
+复现人：刘宇昂
 
-##主要修改部分：
-* binarized_modules(重定义Binarize函数，增加Channel Attention层)，
-* vgg16（full precison vgg16定义）
-* ~~vgg_cifar10_binary(加入attention系数层之后的vgg16)~~ 这个应该是可量化的vgg
-* vgg16_cifar10_bnat.py(加入attention系数层之后的vgg16)
-###新增：
-* resnet_bnat.py(加入attention系数层之后的vgg16)
+## Data
+### ImageNet
+Download the ImageNet dataset from [here](http://image-net.org/download-images).
+No need to split the val set into corresponding folders because we provide api codes to load data:
+```
+from mydataset.imagenet_dataset import ImageNetDataset
+```
+### CIFAR10
+Use ```torchvision.datasets.CIFAR10()```
+
+## Contents
+model-compress
+
+
+
 
 ##训练全精度：
 ```
@@ -55,16 +59,4 @@ python3 finetune_binary.py --model resnet_bnat_pruned --depth 56 \
 ```
 
 
-##初步结果： 
- 
-* vgg16 (full precision)  91.35 
-* vgg16_bnat (-0.5< x <0.5 量化为0，其它为1)       90.52
-* vgg16_bnat (-0.25< x <0.25 量化为0，其它为1)     90.95
-* vgg16_bnat (-0.1< x <0.1 量化为0，其它为1)       91.39
-* vgg16_bnat (x <0 量化为0，其它为1)               89.32
-* vgg16_bnat (x <0 量化为-1，其它为1)               91.67
 
-##下一步：
-* Resnet实验
-   * 先只剪第一层,　resnet18；如果是resnet50，则可以剪前两层
-* 真正剪枝finetuning后实验
